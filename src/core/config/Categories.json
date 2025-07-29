@@ -577,5 +577,11 @@
             "Return",
             "Comment"
         ]
+    },
+    {
+        "name": "Webshell",
+        "ops": [
+            "WebshellEncoder"
+        ]
     }
 ]
