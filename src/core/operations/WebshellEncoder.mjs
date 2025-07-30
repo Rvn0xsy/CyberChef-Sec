@@ -5,7 +5,7 @@
  */
 
 import Operation from "../Operation.mjs";
-import JavaEncoder from "../lib/WebshellEncoder.mjs";
+import {JavaEncoder, ENCODINGS} from "../lib/WebshellEncoder.mjs";
 /**
  * WebshellEncoder operation
  */
@@ -25,9 +25,14 @@ class WebshellEncoder extends Operation {
         this.outputType = "ArrayBuffer";
         this.args = [
             {
+                "name": "HeadEncoding",
+                "type": "option",
+                "value": Object.keys(ENCODINGS)
+            },
+            {
                 "name": "Encoding",
                 "type": "option",
-                "value": ["UTF-8 (65001)", "UTF-7 (65000)", "UTF-16LE (1200)", "UTF-16BE (1201)", "UTF-32LE (12000)", "UTF-32BE (12001)"]
+                "value": Object.keys(ENCODINGS)
             },
             {
                 name: "Language",
@@ -43,13 +48,13 @@ class WebshellEncoder extends Operation {
      * @returns {ArrayBuffer}
      */
     run(input, args) {
-        const language = args[1];
+        const language = args[2];
         if (language !== "Java" && language !== ".NET" && language !== "PHP") {
             throw new Error("Unsupported language: " + language);
         }
         switch (language) {
             case "Java":
-                return JavaEncoder(input, args[0]);
+                return JavaEncoder(input, args[0], args[1]);
             case ".NET":
                 // .NET encoding logic can be added here
                 throw new Error("Encoding for .NET is not implemented yet.");
